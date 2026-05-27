@@ -9,11 +9,11 @@ AGASO_CharacterBase::AGASO_CharacterBase()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 
-	AbilitySystemComponent = CreateDefaultSubobject<UGASO_ASC>(TEXT("AbilitySystemComponent"));
+	AbilitySystemComponent = CreateDefaultSubobject<UGASO_ASC>(TEXT("GASO"));
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 
-	AttributeSet = CreateDefaultSubobject<UGASO_AttributeSet>(TEXT("AttributeSet"));
+	AttributeSetClass = UGASO_AttributeSet::StaticClass();
 
 }
 
@@ -53,6 +53,13 @@ void AGASO_CharacterBase::InitializeAbilitySystem()
 	if (AbilitySystemComponent)
 	{
 		AbilitySystemComponent->InitAbilityActorInfo(this, this);
+
+		// Create AttributeSet from class
+		if (AttributeSetClass)
+		{
+			AttributeSet = NewObject<UGASO_AttributeSet>(this, AttributeSetClass);
+			AbilitySystemComponent->AddAttributeSetSubobject(AttributeSet.Get());
+		}
 	}
 }
 

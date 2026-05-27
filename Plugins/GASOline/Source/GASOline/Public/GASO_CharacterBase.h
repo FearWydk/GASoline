@@ -39,6 +39,11 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "GAS")
 	TObjectPtr<UGASO_AttributeSet> AttributeSet;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GAS|Attributes")
+	TSubclassOf<UGASO_AttributeSet> AttributeSetClass;
+
+
+
 private:
 
 	void InitializeAbilitySystem();
