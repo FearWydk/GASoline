@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GASO_AttributeSet.h"
+#include "GameplayEffectExtension.h"
 #include "YH_EnemyAttributeSet.generated.h"
 
 /**
@@ -21,6 +22,9 @@ public:
 	UYH_EnemyAttributeSet();
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+	//Called automatically by GAS after any GameplayEffect modifies an attribute.
+	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
 	//AttackPower - scales damage applied to Maurice on enemy attack
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attributes|Combat")

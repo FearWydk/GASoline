@@ -63,6 +63,12 @@ void AGASO_CharacterBase::InitializeAbilitySystem()
 	}
 }
 
+void AGASO_CharacterBase::OnGASHealthChanged_Implementation(float NewHealth, float MaxHealth)
+{
+	// Base implementation does notiong
+	// Override in Blueprint per character
+}
+
 // Called to bind functionality to input
 void AGASO_CharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {

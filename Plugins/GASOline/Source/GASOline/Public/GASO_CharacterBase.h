@@ -25,6 +25,18 @@ public:
 	//IGASO_ASI
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent_Implementation() const override;
 
+	/**
+	 * Called by UYH_EnemyAttributeSet::PostGameplayEffectExecute
+	 * when Health changes via a GAS GameplayEffect.
+	 * Override in Blueprint to bridge to AC_Health.
+	 *
+	 * @param NewHealth   Current clamped health value
+	 * @param MaxHealth   Maximum health value
+	 */
+	UFUNCTION(BlueprintImplementableEvent, Category = "GAS|Attributes|Health")
+	void OnGASHealthChanged(float NewHealth, float MaxHealth);
+	virtual void OnGASHealthChanged_Implementation(float NewHealth, float MaxHealth);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
