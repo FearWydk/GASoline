@@ -63,10 +63,10 @@ void AGASO_CharacterBase::InitializeAbilitySystem()
 	}
 }
 
-void AGASO_CharacterBase::OnGASHealthChanged_Implementation(float NewHealth, float MaxHealth)
+void AGASO_CharacterBase::OnGASDamageReceived_Implementation(float DamageAmount)
 {
-	// Base implementation does notiong
-	// Override in Blueprint per character
+	// Base implementation does nothing.
+	// Override in Blueprint (BP_Airborne) to call AC_Health DecreaseHP.
 }
 
 // Called to bind functionality to input

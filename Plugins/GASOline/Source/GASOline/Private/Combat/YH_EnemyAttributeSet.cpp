@@ -28,24 +28,23 @@ void UYH_EnemyAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCa
 	// Only handle Health changes
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
-		// Clamp Health between 0 and MaxHealth
-		float CurrentHealth = GetHealth();
-		float ClampedHealth = FMath::Clamp(CurrentHealth, 0.f, GetMaxHealth());
-		SetHealth(ClampedHealth);
+		// The actual magnitude the effect applied.
+		// Damage effects are negative, so flip the sign for a positive value that maches AC_Health's DecreaseHP function.
 
-		// Calculate actual damage dealt
-		float DamageDealt = GetMaxHealth() - ClampedHealth;
+		float DeltaValue = Data.EvaluatedData.Magnitude;
+		float DamageAmount = -DeltaValue;
 
-		// Notify the owning character so Blueprint can forward to AC_Health
-		AActor* OwnerActor = GetOwningActor();
-		if (OwnerActor)
+		// Keep the GAS Health attribute clamped in valid range
+		SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
+
+		// Only forward actual damage (ignore healing or zero deltas)
+		if (DamageAmount > 0.f)
 		{
-			AGASO_CharacterBase* OwnerCharacter =
-				Cast<AGASO_CharacterBase>(OwnerActor);
-			if (OwnerCharacter)
+			AActor* OwnerActor = GetOwningActor();
+			if (AGASO_CharacterBase* OwnerCharacter =
+				Cast<AGASO_CharacterBase>(OwnerActor))
 			{
-				// Call Blueprint event on the owner character
-				OwnerCharacter->OnGASHealthChanged(ClampedHealth, GetMaxHealth());
+				OwnerCharacter->OnGASDamageReceived(DamageAmount);
 			}
 		}
 	}

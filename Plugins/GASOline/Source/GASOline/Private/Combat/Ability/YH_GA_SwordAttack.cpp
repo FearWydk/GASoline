@@ -12,6 +12,7 @@
 #include "GameplayTagsManager.h"
 #include "DrawDebugHelpers.h"
 #include "Engine/World.h"
+#include "Engine/Engine.h"
 #include "GameFramework/Character.h"
 #include "Combat/YH_PlayerAttributeSet.h"
 
@@ -41,18 +42,14 @@ void UYH_GA_SwordAttack::ActivateAbility(
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-	if (!CommitAbility(Handle, ActorInfo, ActivationInfo))
-	{
-		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
-		return;
-	}
+	
 
 	// Wait for AnimNotify HitCheck event from Blueprint
 	// Bluepring sends: Send Gamplay Event → YH.Combat.Event.HitCheck
 
 	WaitHitCheckTask = UAbilityTask_WaitGameplayEvent::WaitGameplayEvent(
 		this, 
-		FGameplayTag::RequestGameplayTag(FName("YH.Combat.Event.HitCheck")),
+		FGameplayTag::RequestGameplayTag(FName("YH.Combat.Notify.HitCheck")),
 		nullptr,
 		true);
 
@@ -61,10 +58,12 @@ void UYH_GA_SwordAttack::ActivateAbility(
 
 	// Note: Montage is played by Blueprint before calling TryActivateAbility.
 	// GAS handle damage only - animation stays in Blueprint for easier combo system implementation.
+
 }
 
 void UYH_GA_SwordAttack::OnHitCheckReceived(FGameplayEventData Payload)
 {
+
 	const FGameplayAbilityActorInfo* ActorInfo = GetCurrentActorInfo();
 	if (!ActorInfo)
 	{
@@ -107,8 +106,9 @@ void UYH_GA_SwordAttack::PerformHitTrace(const FGameplayAbilityActorInfo* ActorI
 
 
 
-	// Debug visulaization - remove for shipping
-	DrawDebugSphere(World, TraceEnd, HitTraceRadius, 12, FColor::Red, false, 0.5f);
+	
+
+
 
 	UAbilitySystemComponent* SourceASC =
 		ActorInfo->AbilitySystemComponent.Get();
@@ -122,7 +122,12 @@ void UYH_GA_SwordAttack::PerformHitTrace(const FGameplayAbilityActorInfo* ActorI
 		// Get the enemy's ASC
 		UAbilitySystemComponent* TargetASC =
 			UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(HitActor);
-		if (!TargetASC) continue;
+		if (!TargetASC) {
+			
+			continue;
+		}
+	
+	
 
 		// Apply Sword damage effect to enemy
 		if (SwordDamageEffectClass)
@@ -142,7 +147,7 @@ void UYH_GA_SwordAttack::PerformHitTrace(const FGameplayAbilityActorInfo* ActorI
 			}
 
 		}
-
+		
 		//Send Hit.Confirmed event back to Blueprint
 		//Blueprint uses this to progree combo counter
 		FGameplayEventData HitConfirmedPayload;

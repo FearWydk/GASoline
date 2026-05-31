@@ -26,16 +26,15 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent_Implementation() const override;
 
 	/**
-	 * Called by UYH_EnemyAttributeSet::PostGameplayEffectExecute
-	 * when Health changes via a GAS GameplayEffect.
-	 * Override in Blueprint to bridge to AC_Health.
+	 * Called by the AttributeSet's PostGameplayEffectExecute when a GAS
+	 * GameplayEffect deals damage to Health.
+	 * Override in Blueprint to bridge GAS damage to AC_Health (DecreaseHP).
 	 *
-	 * @param NewHealth   Current clamped health value
-	 * @param MaxHealth   Maximum health value
+	 * @param DamageAmount  The actual damage dealt by the effect (positive value)
 	 */
 	UFUNCTION(BlueprintImplementableEvent, Category = "GAS|Attributes|Health")
-	void OnGASHealthChanged(float NewHealth, float MaxHealth);
-	virtual void OnGASHealthChanged_Implementation(float NewHealth, float MaxHealth);
+	void OnGASDamageReceived(float DamageAmount);
+	virtual void OnGASDamageReceived_Implementation(float DamageAmount);
 
 protected:
 	// Called when the game starts or when spawned
