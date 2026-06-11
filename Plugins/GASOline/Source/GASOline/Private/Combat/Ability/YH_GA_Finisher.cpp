@@ -1,67 +1,60 @@
-//Josh Brooks Copyright 2026
-// Elemental Action RPG — The Resonance
-// Maurice Sword Attack Ability
-// GASoline Plugin | Combat Module
+// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Combat/Ability/YH_GA_SwordAttack.h"
-#include "AbilitySystemComponent.h"
+#include "Combat/Ability/YH_GA_Finisher.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "Abilities/Tasks/AbilityTask_WaitGameplayEvent.h"
 #include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
 #include "Abilities/GameplayAbility.h"
-#include "GameplayTagsManager.h"
-#include "DrawDebugHelpers.h"
-#include "Engine/World.h"
-#include "Engine/Engine.h"
-#include "GameFramework/Character.h"
-#include "Combat/YH_PlayerAttributeSet.h"
+#include "AbilitySystemComponent.h"
 
-
-
-UYH_GA_SwordAttack::UYH_GA_SwordAttack()
+UYH_GA_Finisher::UYH_GA_Finisher()
 {
-		// This ability is instanced per execution.
-		InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerExecution;
+	// This ability is instanced per execution.
+	InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerExecution;
 
-		// Ability tag - used to activate via TryActiveAbilitesByTag
-		FGameplayTagContainer NewTags;
-		NewTags.AddTag(
-			FGameplayTag::RequestGameplayTag(FName("YH.Combat.Ability.SwordAttack")));
-		SetAssetTags(NewTags);
+	//Ability tag - used to activate via TryActiveAbilitesByTag
+	FGameplayTagContainer NewTags;
+	NewTags.AddTag(
+		FGameplayTag::RequestGameplayTag(FName("YH.Combat.Ability.Finisher")));
+	SetAssetTags(NewTags);
 
-		// Block other attacks while this is active
-		ActivationBlockedTags.AddTag(
-			FGameplayTag::RequestGameplayTag(FName("YH.Combat.Ability.GunAttack")));
+	FAbilityTriggerData TriggerData;
+	TriggerData.TriggerTag = FGameplayTag::RequestGameplayTag(FName("YH.Combat.Event.Finisher"));
+	TriggerData.TriggerSource = EGameplayAbilityTriggerSource::GameplayEvent;
+	AbilityTriggers.Add(TriggerData);
 
-		FAbilityTriggerData TriggerData;
-		TriggerData.TriggerTag = FGameplayTag::RequestGameplayTag(FName("YH.Combat.Event.SwordAttack"));
-		TriggerData.TriggerSource = EGameplayAbilityTriggerSource::GameplayEvent;
-		AbilityTriggers.Add(TriggerData);
+	// Block other attacks while this is active
+	ActivationBlockedTags.AddTag(
+		FGameplayTag::RequestGameplayTag(FName("YH.Combat.Ability.GunAttack")));
+
+	ActivationBlockedTags.AddTag(
+		FGameplayTag::RequestGameplayTag(FName("YH.Combat.Ability.SwordAttack")));
+
+	
+	
 }
 
-void UYH_GA_SwordAttack::ActivateAbility(
-	const FGameplayAbilitySpecHandle Handle,
-	const FGameplayAbilityActorInfo* ActorInfo,
-	const FGameplayAbilityActivationInfo ActivationInfo,
+void UYH_GA_Finisher::ActivateAbility(
+	const FGameplayAbilitySpecHandle Handle, 
+	const FGameplayAbilityActorInfo* ActorInfo, 
+	const FGameplayAbilityActivationInfo ActivationInfo, 
 	const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-	
-
 	// Wait for AnimNotify HitCheck event from Blueprint
-	// Blueprint sends: Send Gamplay Event → YH.Combat.Event.HitCheck
+	// Blueprint sends: Send Gamplay Event → YH.Combat.Event.FinisherHitCheck
 
 	WaitHitCheckTask = UAbilityTask_WaitGameplayEvent::WaitGameplayEvent(
-		this, 
+		this,
 		FGameplayTag::RequestGameplayTag(FName("YH.Combat.Notify.HitCheck")),
 		nullptr,
-		true);
+		false);
 
-	WaitHitCheckTask->EventReceived.AddDynamic(this, &UYH_GA_SwordAttack::OnHitCheckReceived);
+	WaitHitCheckTask->EventReceived.AddDynamic(this, &UYH_GA_Finisher::OnFinisherHitCheckReceived);
 	WaitHitCheckTask->ReadyForActivation();
-	//Ability plays the montage.
+
 	UAnimMontage* AbilityMontage = Cast<UAnimMontage>(const_cast<UObject*>(TriggerEventData->OptionalObject.Get()));
 	if (!AbilityMontage)
 	{
@@ -69,22 +62,26 @@ void UYH_GA_SwordAttack::ActivateAbility(
 		return;
 	}
 	
+		//Ability plays the montage.
 	PlayMontageTask = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(
 		this,
 		NAME_None,
 		AbilityMontage);
-	
+
 	if (PlayMontageTask)
 	{
-		PlayMontageTask->OnCompleted.AddDynamic(this, &UYH_GA_SwordAttack::OnMontageEnd);
-		PlayMontageTask->OnInterrupted.AddDynamic(this, &UYH_GA_SwordAttack::OnMontageEnd);
-		PlayMontageTask->OnCancelled.AddDynamic(this, &UYH_GA_SwordAttack::OnMontageEnd);
+		PlayMontageTask->OnCompleted.AddDynamic(this, &UYH_GA_Finisher::OnMontageEnd);
+		PlayMontageTask->OnInterrupted.AddDynamic(this, &UYH_GA_Finisher::OnMontageEnd);
+		PlayMontageTask->OnCancelled.AddDynamic(this, &UYH_GA_Finisher::OnMontageEnd);
 		PlayMontageTask->ReadyForActivation();
 	}
 
+	
 }
 
-void UYH_GA_SwordAttack::OnHitCheckReceived(FGameplayEventData Payload)
+
+
+void UYH_GA_Finisher::OnFinisherHitCheckReceived(FGameplayEventData Payload)
 {
 
 	const FGameplayAbilityActorInfo* ActorInfo = GetCurrentActorInfo();
@@ -94,12 +91,17 @@ void UYH_GA_SwordAttack::OnHitCheckReceived(FGameplayEventData Payload)
 		return;
 	}
 
-	PerformHitTrace(ActorInfo);
+	PerformFinisherHitTrace(ActorInfo);
 
 	
 }
 
-void UYH_GA_SwordAttack::PerformHitTrace(const FGameplayAbilityActorInfo* ActorInfo)
+void UYH_GA_Finisher::OnMontageEnd()
+{
+	EndAbility(GetCurrentAbilitySpecHandle(), GetCurrentActorInfo(), GetCurrentActivationInfo(), false, true);
+}
+
+void UYH_GA_Finisher::PerformFinisherHitTrace(const FGameplayAbilityActorInfo* ActorInfo)
 {
 	AActor* AvatarActor = ActorInfo->AvatarActor.Get();
 	if (!AvatarActor) return;
@@ -122,7 +124,7 @@ void UYH_GA_SwordAttack::PerformHitTrace(const FGameplayAbilityActorInfo* ActorI
 		TraceEnd,
 		FQuat::Identity,
 		ECollisionChannel::ECC_Pawn,
-		FCollisionShape::MakeSphere(HitTraceRadius),
+		FCollisionShape::MakeSphere(FinisherHitTraceRadius),
 		QueryParams
 	);
 
@@ -139,12 +141,12 @@ void UYH_GA_SwordAttack::PerformHitTrace(const FGameplayAbilityActorInfo* ActorI
 		UAbilitySystemComponent* TargetASC =
 			UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(HitActor);
 		if (!TargetASC) {
-			
+
 			continue;
 		}
-	
+
 		// Apply Sword damage effect to enemy
-		if (SwordDamageEffectClass)
+		if (FinisherDamageEffectClass)
 		{
 			FGameplayEffectContextHandle EffectContext =
 				SourceASC->MakeEffectContext();
@@ -152,7 +154,7 @@ void UYH_GA_SwordAttack::PerformHitTrace(const FGameplayAbilityActorInfo* ActorI
 
 			FGameplayEffectSpecHandle SpecHandle =
 				SourceASC->MakeOutgoingSpec(
-					SwordDamageEffectClass, 1.0f, EffectContext);
+					FinisherDamageEffectClass, 1.0f, EffectContext);
 
 			if (SpecHandle.IsValid())
 			{
@@ -161,7 +163,7 @@ void UYH_GA_SwordAttack::PerformHitTrace(const FGameplayAbilityActorInfo* ActorI
 			}
 
 		}
-		
+
 		//Send Hit.Confirmed event back to Blueprint
 		//Blueprint uses this to progree combo counter
 		FGameplayEventData HitConfirmedPayload;
@@ -174,20 +176,17 @@ void UYH_GA_SwordAttack::PerformHitTrace(const FGameplayAbilityActorInfo* ActorI
 		);
 
 		// Only damage the first valid enemy hit per swing
+
 		break;
+
 	}
 }
 
-void UYH_GA_SwordAttack::OnMontageEnd()
-{
-	EndAbility(GetCurrentAbilitySpecHandle(), GetCurrentActorInfo(), GetCurrentActivationInfo(), false,true);
-}
-
-void UYH_GA_SwordAttack::EndAbility(
+void UYH_GA_Finisher::EndAbility(
 	const FGameplayAbilitySpecHandle Handle,
 	const FGameplayAbilityActorInfo* ActorInfo,
 	const FGameplayAbilityActivationInfo ActivationInfo,
-	bool bReplicatedEndAbility,
+	bool bReplicateEndAbility,
 	bool bWasCancelled)
 {
 	if (WaitHitCheckTask)
@@ -195,6 +194,6 @@ void UYH_GA_SwordAttack::EndAbility(
 		WaitHitCheckTask->EndTask();
 	}
 	
-
-	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicatedEndAbility, bWasCancelled);
+	
+	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }

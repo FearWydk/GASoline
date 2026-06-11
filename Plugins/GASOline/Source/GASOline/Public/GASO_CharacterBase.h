@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "GASO_ASI.h"
 #include "AbilitySystemInterface.h"
+#include "GASO_AbilitySet.h"
 #include "GASO_ASC.h"
 #include "GASO_AttributeSet.h"
 #include "GASO_CharacterBase.generated.h"
@@ -52,6 +53,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GAS|Attributes")
 	TSubclassOf<UGASO_AttributeSet> AttributeSetClass;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GAS|Abilities")
+	TObjectPtr<UGASO_AbilitySet> CombatAbilitySet;
 
 
 

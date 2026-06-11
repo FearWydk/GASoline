@@ -8,11 +8,13 @@
 #include "CoreMinimal.h"
 #include "GASO_AbilityBase.h"
 #include "Combat/YH_CombatTypes.h"
-#include "Abilities/Tasks/AbilityTask_WaitGameplayEvent.h"
 #include "YH_GA_SwordAttack.generated.h"
 
+class UAbilityTask_WaitGameplayEvent;
+class UAbilityTask_PlayMontageAndWait;
+
 /**
- *  * Sword attack ability for Maurice.
+ *  * Sword attack ability for Player.
  * Activated by input tag YH.Combat.Ability.SwordAttack.
  * 
  * Flow:
@@ -50,10 +52,12 @@ protected:
 	// Listens for AnimNotify HitCheck event from Blueprint
 	UFUNCTION()
 	void OnHitCheckReceived(FGameplayEventData Payload);
-
+	
 	// Performs hit trace and applied damage
 	void PerformHitTrace(const FGameplayAbilityActorInfo* ActorInfo);
 
+	UFUNCTION()
+	void OnMontageEnd();
 	// Gameplay Effect class to apply on sword hit
 	UPROPERTY(EditDefaultsOnly, Category = "Combat|Sword")
 	TSubclassOf<UGameplayEffect> SwordDamageEffectClass;
@@ -69,4 +73,7 @@ protected:
 	// Reference to the wait event task so we can end it cleanly
 	UPROPERTY()
 	TObjectPtr<UAbilityTask_WaitGameplayEvent> WaitHitCheckTask;
+
+	UPROPERTY()
+	TObjectPtr<UAbilityTask_PlayMontageAndWait> PlayMontageTask;
 };

@@ -124,6 +124,7 @@ void UYH_ComboManager::HandleHitConfirmed(const FGameplayEventData* Payload)
 	// Reached the finsher: fire it, then zero out. Finisher.Active blocks input meanwhile.
 	if (ComboIndex >= MaxComboHits)
 	{
+		
 		// Evaluate the recipe based on the combo history, and fire the finisher event with the result.
 		FComboResult Result = UYH_CombatStatics::EvaluateCombo(ComboHistory);
 		OnRequestFinisher.Broadcast(Result);
