@@ -55,7 +55,7 @@ protected:
 
 	// Gameplay Effect class to apply on finisher hit, which scales based on the combo result (e.g. more hits = more damage).
 	UPROPERTY(EditDefaultsOnly, Category = "Combat|Sword")
-	TSubclassOf<UGameplayEffect> FinisherDamageEffectClass;
+	TSubclassOf<UGameplayEffect> DamageEffectClass;
 
 	// Trace radius around the player for the finisher hit check.
 	UPROPERTY(EditDefaultsOnly, Category = "Combat|Sword")
@@ -70,4 +70,7 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr<UAbilityTask_PlayMontageAndWait> PlayMontageTask;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Combat|Sword")
+	float DamageAmount = 20.0f;
 };

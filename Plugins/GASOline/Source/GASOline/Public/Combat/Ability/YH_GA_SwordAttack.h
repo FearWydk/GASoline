@@ -60,7 +60,7 @@ protected:
 	void OnMontageEnd();
 	// Gameplay Effect class to apply on sword hit
 	UPROPERTY(EditDefaultsOnly, Category = "Combat|Sword")
-	TSubclassOf<UGameplayEffect> SwordDamageEffectClass;
+	TSubclassOf<UGameplayEffect> DamageEffectClass;
 
 	// Trace radius around Maurice's forward position
 	UPROPERTY(EditDefaultsOnly, Category = "Combat|Sword")
@@ -76,4 +76,7 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr<UAbilityTask_PlayMontageAndWait> PlayMontageTask;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Combat|Sword")
+	float DamageAmount = 20.0f;
 };

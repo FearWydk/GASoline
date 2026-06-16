@@ -8,7 +8,8 @@
 #include "GASO_AttributeSet.h"
 #include "GameplayTagContainer.h"
 #include "GameplayAbilitySpecHandle.h"
-
+#include "GameplayAbilitySpec.h" // for FGameplayAbilitySpecHandle
+#include "GameplayEffectTypes.h" // for FActiveGameplayEffectHandle
 #include "GASO_AbilitySet.generated.h"
 
 class UAttributeSet;
@@ -80,8 +81,8 @@ struct FGASO_AbilitySet_GrantedHandles
 	GENERATED_BODY()
 
 public:
-	void AddAbilitySpecHandle(const FGameplayAbilitySpecHandle& Handle);
-	void AddGameplayEffectHandle(const FActiveGameplayEffectHandle& Handle);
+	void AddAbilitySpecHandle(const FGameplayAbilitySpecHandle& SpecHandle);
+	void AddGameplayEffectHandle(const FActiveGameplayEffectHandle& EffectHandle);
 	void AddAttributeSet(UAttributeSet* Set);
 	void TakeFromAbilitySystem(UGASO_ASC* GASOASC);
 

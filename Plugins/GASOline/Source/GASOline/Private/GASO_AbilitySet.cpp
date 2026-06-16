@@ -8,19 +8,19 @@
 #include UE_INLINE_GENERATED_CPP_BY_NAME(GASO_AbilitySet)
 
 
-void FGASO_AbilitySet_GrantedHandles::AddAbilitySpecHandle(const FGameplayAbilitySpecHandle& Handle)
+void FGASO_AbilitySet_GrantedHandles::AddAbilitySpecHandle(const FGameplayAbilitySpecHandle& SpecHandle)
 {
-	if (Handle.IsValid())
+	if (SpecHandle.IsValid())
 	{
-		AbilitySpecHandles.Add(Handle);
+		AbilitySpecHandles.Add(SpecHandle);
 	}
 }
 
-void FGASO_AbilitySet_GrantedHandles::AddGameplayEffectHandle(const FActiveGameplayEffectHandle& Handle)
+void FGASO_AbilitySet_GrantedHandles::AddGameplayEffectHandle(const FActiveGameplayEffectHandle& EffectHandle)
 {
-	if (Handle.IsValid())
+	if (EffectHandle.IsValid())
 	{
-		GameplayEffectHandles.Add(Handle);
+		GameplayEffectHandles.Add(EffectHandle);
 	}
 }
 

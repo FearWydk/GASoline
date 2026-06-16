@@ -7,6 +7,8 @@
 #include "Combat/YH_EnemyAttributeSet.h"
 #include "Net/UnrealNetwork.h"
 #include "GameplayEffectExtension.h"
+#include "Abilities/GameplayAbility.h"
+#include "AbilitySystemComponent.h"
 #include "GASO_CharacterBase.h"
 
 UYH_EnemyAttributeSet::UYH_EnemyAttributeSet() : AttackPower(15.f)
@@ -45,6 +47,16 @@ void UYH_EnemyAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCa
 				Cast<AGASO_CharacterBase>(OwnerActor))
 			{
 				OwnerCharacter->OnGASDamageReceived(DamageAmount);
+				if (GetHealth()<=0)
+				{
+					bDeathStarted = true;
+
+					/* FAbilityTriggerData TriggerData;
+					TriggerData.TriggerTag = FGameplayTag::RequestGameplayTag(FName("YH.Combat.Event.Death"));
+					TriggerData.TriggerSource = EGameplayAbilityTriggerSource::GameplayEvent;
+					Data.Target.AbilityActorInfo->AvatarActor.OnDeath();
+					*/
+				}
 			}
 		}
 	}

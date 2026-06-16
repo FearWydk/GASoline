@@ -7,7 +7,7 @@
 
 #include "CoreMinimal.h"
 #include "GASO_EffectBase.h"
-#include "YH_GE_SwordDamage.generated.h"
+#include "YH_GE_Damage.generated.h"
 
 /**
  * Instant damage applied to enemy Health on sword hit confirmation.
@@ -15,10 +15,10 @@
  * Scales with Maurice's AttackPower attribute post vertical slice.
  */
 UCLASS()
-class GASOLINE_API UYH_GE_SwordDamage : public UGASO_EffectBase
+class GASOLINE_API UYH_GE_Damage : public UGASO_EffectBase
 {
 	GENERATED_BODY()
 	
 public:
-	UYH_GE_SwordDamage();
+	UYH_GE_Damage();
 };

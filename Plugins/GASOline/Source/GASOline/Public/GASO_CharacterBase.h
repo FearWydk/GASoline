@@ -54,8 +54,11 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GAS|Attributes")
 	TSubclassOf<UGASO_AttributeSet> AttributeSetClass;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GAS|Abilities")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "GAS|Abilities")
 	TObjectPtr<UGASO_AbilitySet> CombatAbilitySet;
+
+	UPROPERTY()
+	FGASO_AbilitySet_GrantedHandles GrantedHandles;
 
 
 

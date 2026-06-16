@@ -31,6 +31,9 @@ public:
 	FGameplayAttributeData AttackPower;
 	ATTRIBUTE_ACCESSORS(UYH_EnemyAttributeSet, AttackPower)
 
+	UPROPERTY(EditAnywhere)
+	bool bDeathStarted;
+
 protected:
 
 	UFUNCTION()

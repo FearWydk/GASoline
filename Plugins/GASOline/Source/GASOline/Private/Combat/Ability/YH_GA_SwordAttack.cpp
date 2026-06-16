@@ -144,7 +144,7 @@ void UYH_GA_SwordAttack::PerformHitTrace(const FGameplayAbilityActorInfo* ActorI
 		}
 	
 		// Apply Sword damage effect to enemy
-		if (SwordDamageEffectClass)
+		if (DamageEffectClass)
 		{
 			FGameplayEffectContextHandle EffectContext =
 				SourceASC->MakeEffectContext();
@@ -152,12 +152,19 @@ void UYH_GA_SwordAttack::PerformHitTrace(const FGameplayAbilityActorInfo* ActorI
 
 			FGameplayEffectSpecHandle SpecHandle =
 				SourceASC->MakeOutgoingSpec(
-					SwordDamageEffectClass, 1.0f, EffectContext);
+					DamageEffectClass, 1.0f, EffectContext);
 
 			if (SpecHandle.IsValid())
 			{
+				SpecHandle.Data->SetSetByCallerMagnitude(
+					FGameplayTag::RequestGameplayTag(FName("Data.Damage")),
+					-DamageAmount);
+
 				SourceASC->ApplyGameplayEffectSpecToTarget(
 					*SpecHandle.Data.Get(), TargetASC);
+				
+				
+
 			}
 
 		}
