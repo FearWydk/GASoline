@@ -26,16 +26,8 @@ public:
 	//IGASO_ASI
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent_Implementation() const override;
 
-	/**
-	 * Called by the AttributeSet's PostGameplayEffectExecute when a GAS
-	 * GameplayEffect deals damage to Health.
-	 * Override in Blueprint to bridge GAS damage to AC_Health (DecreaseHP).
-	 *
-	 * @param DamageAmount  The actual damage dealt by the effect (positive value)
-	 */
-	UFUNCTION(BlueprintImplementableEvent, Category = "GAS|Attributes|Health")
-	void OnGASDamageReceived(float DamageAmount);
-	virtual void OnGASDamageReceived_Implementation(float DamageAmount);
+	
+	
 
 protected:
 	// Called when the game starts or when spawned
@@ -54,7 +46,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GAS|Attributes")
 	TSubclassOf<UGASO_AttributeSet> AttributeSetClass;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "GAS|Abilities")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GAS|Abilities")
 	TObjectPtr<UGASO_AbilitySet> CombatAbilitySet;
 
 	UPROPERTY()
@@ -72,4 +64,9 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "GAS")
+	void OnGASDamageReceived(float DamageAmount);
+
+	UPROPERTY(EditDefaultsOnly, Category = "GAS") 
+	float DefaultMaxHealth = 100.f;
 };

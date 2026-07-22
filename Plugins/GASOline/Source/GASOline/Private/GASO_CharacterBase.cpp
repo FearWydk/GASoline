@@ -70,20 +70,23 @@ void AGASO_CharacterBase::InitializeAbilitySystem()
 		{
 			AttributeSet = NewObject<UGASO_AttributeSet>(this, AttributeSetClass);
 			AbilitySystemComponent->AddAttributeSetSubobject(AttributeSet.Get());
+			AttributeSet->SetMaxHealth(DefaultMaxHealth);
+			AttributeSet->SetHealth(DefaultMaxHealth);
 		}
 	}
 }
 
-void AGASO_CharacterBase::OnGASDamageReceived_Implementation(float DamageAmount)
-{
-	// Base implementation does nothing.
-	// Override in Blueprint (BP_Airborne) to call AC_Health DecreaseHP.
-}
+
 
 // Called to bind functionality to input
 void AGASO_CharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+void AGASO_CharacterBase::OnGASDamageReceived_Implementation(float DamageAmount)
+{
+	//Override in BP
 }
 

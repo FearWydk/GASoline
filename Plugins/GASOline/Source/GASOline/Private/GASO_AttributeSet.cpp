@@ -6,7 +6,7 @@
 
 UGASO_AttributeSet::UGASO_AttributeSet() :
 	Health(),
-	MaxHealth(100.f)
+	MaxHealth()
 {
 
 }

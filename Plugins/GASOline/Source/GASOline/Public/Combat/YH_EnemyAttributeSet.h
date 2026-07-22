@@ -32,7 +32,7 @@ public:
 	ATTRIBUTE_ACCESSORS(UYH_EnemyAttributeSet, AttackPower)
 
 	UPROPERTY(EditAnywhere)
-	bool bDeathStarted;
+	bool bDeathStarted = false;
 
 protected:
 
