@@ -46,6 +46,7 @@ void UYH_GA_SwordAttack::ActivateAbility(
 	const FGameplayAbilityActivationInfo ActivationInfo,
 	const FGameplayEventData* TriggerEventData)
 {
+
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
 	
@@ -134,7 +135,7 @@ void UYH_GA_SwordAttack::PerformHitTrace(const FGameplayAbilityActorInfo* ActorI
 	{
 		AActor* HitActor = Hit.GetActor();
 		if (!HitActor) continue;
-
+		UE_LOG(LogTemp, Display, TEXT("Hit Actor is valid"));
 		// Get the enemy's ASC
 		UAbilitySystemComponent* TargetASC =
 			UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(HitActor);
@@ -142,10 +143,11 @@ void UYH_GA_SwordAttack::PerformHitTrace(const FGameplayAbilityActorInfo* ActorI
 			
 			continue;
 		}
-	
+		UE_LOG(LogTemp, Display, TEXT("Hit Target ASC is valid"));
 		// Apply Sword damage effect to enemy
 		if (DamageEffectClass)
 		{
+			UE_LOG(LogTemp, Display, TEXT("DamageEffectClass Valid"));
 			FGameplayEffectContextHandle EffectContext =
 				SourceASC->MakeEffectContext();
 			EffectContext.AddSourceObject(AvatarActor);
@@ -164,6 +166,7 @@ void UYH_GA_SwordAttack::PerformHitTrace(const FGameplayAbilityActorInfo* ActorI
 					*SpecHandle.Data.Get(), TargetASC);
 				
 				
+				UE_LOG(LogTemp, Display, TEXT("DamageAmount is valid"));
 
 			}
 

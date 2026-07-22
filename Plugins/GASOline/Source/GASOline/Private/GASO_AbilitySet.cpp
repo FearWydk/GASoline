@@ -32,7 +32,7 @@ void FGASO_AbilitySet_GrantedHandles::AddAttributeSet(UAttributeSet* Set)
 void FGASO_AbilitySet_GrantedHandles::TakeFromAbilitySystem(UGASO_ASC* GASOASC)
 {
 	check(GASOASC);
-	
+
 	if (!GASOASC->IsOwnerActorAuthoritative())
 	{
 		// Must be authoritative to grant/remove handles from the ASC
@@ -83,7 +83,7 @@ void UGASO_AbilitySet::GiveToAbilitySystem(UGASO_ASC* GASOASC, FGASO_AbilitySet_
 	for (int32 SetIndex = 0; SetIndex < GrantedAttributes.Num(); SetIndex++)
 	{
 		const FGASO_AbilitySet_AttributeSet& AttributeSetToGrant = GrantedAttributes[SetIndex];
-		
+
 		if (!IsValid(AttributeSetToGrant.AttributeSet))
 		{
 			UE_LOG(LogTemp, Warning, TEXT("UGASO_AbilitySet::GiveToAbilitySystem: Invalid AttributeSet class in GrantedAttributes at index %d in AbilitySet %s"), SetIndex, *GetNameSafe(this));
@@ -109,7 +109,7 @@ void UGASO_AbilitySet::GiveToAbilitySystem(UGASO_ASC* GASOASC, FGASO_AbilitySet_
 			UE_LOG(LogTemp, Warning, TEXT("UGASO_AbilitySet::GiveToAbilitySystem: Invalid GameplayAbility class in GrantedGameplayAbilities at index %d in AbilitySet %s"), AbilityIndex, *GetNameSafe(this));
 			continue;
 		}
-		
+
 		UGameplayAbility* AbilityCDO = AbilityToGrant.Ability->GetDefaultObject<UGameplayAbility>();
 		// Set up the ability spec to grant the ability with the specified level and input tag.
 		FGameplayAbilitySpec AbilitySpec(AbilityCDO, AbilityToGrant.AbilityLevel);
@@ -143,7 +143,7 @@ void UGASO_AbilitySet::GiveToAbilitySystem(UGASO_ASC* GASOASC, FGASO_AbilitySet_
 		{
 			OutGrantedHandles->AddGameplayEffectHandle(GameplayEffectHandle);
 		}
-		
+
 	}
 }
 

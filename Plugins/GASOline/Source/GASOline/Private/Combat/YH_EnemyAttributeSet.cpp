@@ -48,6 +48,17 @@ void UYH_EnemyAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCa
 				Cast<AGASO_CharacterBase>(OwnerActor))
 			{
 				OwnerCharacter->OnGASDamageReceived(DamageAmount);
+
+				// Only react if the hit wasn't lethal
+				if (GetHealth() > 0.f)
+				{
+					FGameplayEventData HitReactPayload;
+					HitReactPayload.OptionalObject = OwnerCharacter->HitReactMontage;
+					UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+						OwnerActor,
+						FGameplayTag::RequestGameplayTag(FName("YH.Combat.Event.HitReact")),
+						HitReactPayload);
+				}
 				if (GetHealth()<=0.f && !bDeathStarted)
 				{
 					bDeathStarted = true;

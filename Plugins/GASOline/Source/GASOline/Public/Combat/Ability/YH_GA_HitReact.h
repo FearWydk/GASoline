@@ -45,7 +45,7 @@ protected:
 	TObjectPtr<UAbilityTask_PlayMontageAndWait> PlayMontageTask;
 
 public:
-	
+
 	UPROPERTY(EditDefaultsOnly) UAnimMontage* HitReactMontage;
 
 

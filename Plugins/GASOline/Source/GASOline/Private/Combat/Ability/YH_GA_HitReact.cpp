@@ -32,7 +32,7 @@ void UYH_GA_HitReact::ActivateAbility(
 
 
 
-	
+
 	//Ability plays the montage.
 	UAnimMontage* AbilityMontage = Cast<UAnimMontage>(const_cast<UObject*>(TriggerEventData->OptionalObject.Get()));
 	if (!AbilityMontage)

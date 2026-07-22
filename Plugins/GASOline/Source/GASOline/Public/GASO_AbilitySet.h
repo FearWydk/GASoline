@@ -30,7 +30,7 @@ public:
 	// Gameplay ability to grant.
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UGameplayAbility> Ability;
-	
+
 	// Ability Level
 	UPROPERTY(EditDefaultsOnly, Category = "GASO")
 	int32 AbilityLevel = 1;
@@ -87,7 +87,7 @@ public:
 	void TakeFromAbilitySystem(UGASO_ASC* GASOASC);
 
 protected:
-	
+
 	//Handles to the granted abilities, gameplay effects, and attribute sets. These are stored so they can be removed when the ability set is removed from the ASC.
 
 	UPROPERTY()
@@ -107,12 +107,12 @@ UCLASS()
 class GASOLINE_API UGASO_AbilitySet : public UPrimaryDataAsset
 {
 	GENERATED_BODY()
-	
+
 public:
 	UGASO_AbilitySet(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 	// Grants the abilities, gameplay effects, and attribute sets in this ability set to the ASC.
-	void GiveToAbilitySystem(UGASO_ASC* GASOASC,FGASO_AbilitySet_GrantedHandles* OutGrantedHandles,  UObject* SourceObject = nullptr) const;
+	void GiveToAbilitySystem(UGASO_ASC* GASOASC, FGASO_AbilitySet_GrantedHandles* OutGrantedHandles, UObject* SourceObject = nullptr) const;
 
 protected:
 	// Gameplay abilities to grant when this ability set is granted.
@@ -125,4 +125,3 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "GASO", meta = (TitleProperty = AttributeSet))
 	TArray<FGASO_AbilitySet_AttributeSet> GrantedAttributes;
 };
-

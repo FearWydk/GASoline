@@ -5,8 +5,8 @@
 #include "Net/UnrealNetwork.h"
 
 UGASO_AttributeSet::UGASO_AttributeSet() :
-	Health(),
-	MaxHealth()
+	Health(MaxHealth),
+	MaxHealth(100.f)
 {
 
 }

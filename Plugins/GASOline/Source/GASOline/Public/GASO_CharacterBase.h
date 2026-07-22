@@ -6,10 +6,11 @@
 #include "GameFramework/Character.h"
 #include "GASO_ASI.h"
 #include "AbilitySystemInterface.h"
-#include "GASO_AbilitySet.h"
 #include "GASO_ASC.h"
 #include "GASO_AttributeSet.h"
+#include "GASO_AbilitySet.h"
 #include "GASO_CharacterBase.generated.h"
+
 
 UCLASS()
 class GASOLINE_API AGASO_CharacterBase : public ACharacter, public IGASO_ASI, public IAbilitySystemInterface
@@ -25,9 +26,6 @@ public:
 
 	//IGASO_ASI
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent_Implementation() const override;
-
-	
-	
 
 protected:
 	// Called when the game starts or when spawned
@@ -67,6 +65,10 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "GAS")
 	void OnGASDamageReceived(float DamageAmount);
 
-	UPROPERTY(EditDefaultsOnly, Category = "GAS") 
+	UPROPERTY(EditDefaultsOnly, Category = "GAS")
 	float DefaultMaxHealth = 100.f;
+
+
+	UPROPERTY(EditDefaultsOnly, Category = "Combat")
+	TObjectPtr<UAnimMontage> HitReactMontage;
 };

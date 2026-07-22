@@ -39,9 +39,8 @@ public class GASOline : ModuleRules
 		PrivateDependencyModuleNames.AddRange(
 			new string[]
 			{
-				
 				"Slate",
-				"SlateCore",
+				"SlateCore"
 				
 				// ... add private dependencies that you statically link with here ...	
 			}
