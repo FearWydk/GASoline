@@ -13,7 +13,7 @@
 
 
 UCLASS()
-class GASOLINE_API AGASO_CharacterBase : public ACharacter, public IGASO_ASI, public IAbilitySystemInterface
+class GASOLINE_API AGASO_CharacterBase : public ACharacter, public IGASO_ASI, public IAbilitySystemInterface //May need to take out IGASO_ASI if it doesn't do anything different from IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
@@ -24,7 +24,7 @@ public:
 	//IAbilitySystemInterface
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
-	//IGASO_ASI
+	//IGASO_ASI may not need to implement this if it doesn't do anything different from IAbilitySystemInterface
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent_Implementation() const override;
 
 protected:
@@ -38,10 +38,10 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "GAS")
 	TObjectPtr<UGASO_ASC> AbilitySystemComponent;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "GAS")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "GAS") // This is the attribute set that will be used by this character. It should be a subclass of UGASO_AttributeSet.
 	TObjectPtr<UGASO_AttributeSet> AttributeSet;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GAS|Attributes")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GAS|Attributes") // This is the class of the attribute set that will be used by this character. It should be a subclass of UGASO_AttributeSet.
 	TSubclassOf<UGASO_AttributeSet> AttributeSetClass;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GAS|Abilities")
@@ -50,6 +50,8 @@ protected:
 	UPROPERTY()
 	FGASO_AbilitySet_GrantedHandles GrantedHandles;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GAS|Abilities")
+	EGameplayEffectReplicationMode GASO_ReplicationMode = EGameplayEffectReplicationMode::Mixed;
 
 
 private:

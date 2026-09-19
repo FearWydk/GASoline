@@ -2,6 +2,10 @@
 
 
 #include "GASO_CharacterBase.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "Components/CapsuleComponent.h"
+#include "GASO_AttributeSet.h"
+
 
 // Sets default values
 AGASO_CharacterBase::AGASO_CharacterBase()
@@ -11,8 +15,28 @@ AGASO_CharacterBase::AGASO_CharacterBase()
 
 	AbilitySystemComponent = CreateDefaultSubobject<UGASO_ASC>(TEXT("AbilitySystemComponent"));
 	AbilitySystemComponent->SetIsReplicated(true);
-	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
+	AbilitySystemComponent->SetReplicationMode(GASO_ReplicationMode);
 
+	//Set size of capsule component to match the character's size. This is important for collision and movement.
+	GetCapsuleComponent()->InitCapsuleSize(35.f, 90.0f);
+
+	// Don't rotate when the controller rotates. Let that just affect the camera.
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationYaw = false;
+	bUseControllerRotationRoll = false;
+
+	// Configure character movement
+	GetCharacterMovement()->bOrientRotationToMovement = true; // Character moves in the direction of input...
+	GetCharacterMovement()->RotationRate = FRotator(0.f, 540.f, 0.f); // ...at this rotation rate
+
+	GetCharacterMovement()->JumpZVelocity = 500.f;
+	GetCharacterMovement()->AirControl = 0.35f;
+	GetCharacterMovement()->MaxWalkSpeed = 500.f;
+	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
+	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
+	GetCharacterMovement()->BrakingDecelerationFalling = 1500.f;
+
+	// Set default attribute set class to UGASO_AttributeSet
 	AttributeSetClass = UGASO_AttributeSet::StaticClass();
 
 }

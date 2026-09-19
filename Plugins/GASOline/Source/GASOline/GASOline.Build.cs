@@ -28,9 +28,7 @@ public class GASOline : ModuleRules
 				"Core",
                 "CoreUObject",
                 "Engine",
-                "GameplayAbilities",
-                "GameplayTasks",
-                "GameplayTags"
+                
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);
@@ -40,7 +38,10 @@ public class GASOline : ModuleRules
 			new string[]
 			{
 				"Slate",
-				"SlateCore"
+				"SlateCore",
+				"GameplayAbilities",
+                "GameplayTasks",
+                "GameplayTags"
 				
 				// ... add private dependencies that you statically link with here ...	
 			}
