@@ -1,5 +1,4 @@
 [README.md](https://github.com/user-attachments/files/32410487/README.md)
-# GASolinePluginProject
 # GASOline
 
 A reusable C++ [Gameplay Ability System](https://docs.unrealengine.com/5.7/en-US/gameplay-ability-system-for-unreal-engine/) (GAS) plugin for Unreal Engine 5. It wraps GAS's setup boilerplate — Ability System Component, Attribute Sets, ability/effect base classes — into a small, reusable core, and grants abilities and attributes to actors through a data asset instead of hand-wiring each one in Blueprint or C++.
